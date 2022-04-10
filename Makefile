@@ -1,5 +1,7 @@
-CXX = g++ # C++ compiler
+CXX = $(shell wx-config --cxx) # C++ compiler
 CXXFLAGS = -g -Wall -I include/ # C++ compiler flags
+WXCXXFLAGS = $(shell wx-config --cxxflags) # wxWidgets C++ compiler flags
+WXLIBS = $(shell wx-config --libs) # wxWidgets libraries
 
 TARGET = WrestlingScheduler # Target name, output file
 
@@ -9,13 +11,13 @@ OBJS = $(patsubst src/%.cpp, obj/%.o, $(SRCS)) # Object files to build (source f
 all: $(TARGET) # Target to build everything, depends on TARGET
 
 $(TARGET): $(OBJS) # Target to build, depends on OBJS
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET) $(WXLIBS)
 
 obj/%.d: %.cpp # Build dependency file for object file
 	$(CXX) -MM -MT -o $@ $(CXXFLAGS) $<
 
 obj/%.o: src/%.cpp # Build object file for source file
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) $(WXCXXFLAGS) -c -o $@ $<
 
 clean: # Target to clean up, removes all object files
 	$(RM) $(OBJS)
