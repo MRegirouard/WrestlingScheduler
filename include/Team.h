@@ -18,7 +18,7 @@ public:
 
 	void setName(const std::string name);
 	void setName(const char* name);
-	const char* getName() const;
+	std::string getName() const;
 private:
 	/**
 	 * The rank of this team.
@@ -28,7 +28,7 @@ private:
 	/**
 	 * The name of this team.
 	 */
-	const char* name;
+	std::string name;
 };
 
 #endif // _TEAM_H_
