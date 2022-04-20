@@ -82,3 +82,63 @@ Meet::MeetType Meet::getType() const
 {
 	return this->type;
 }
+
+/**
+ * Get the teams that the given team index
+ * will play against in this meet.
+ * @param index The index of the team to get the vs teams for
+ * @return The teams that the given team index will play against.
+ * Returns nullptr if the index is out of bounds, and returns
+ * nullptr for the second team if this team only plays one team.
+ */
+Team** Meet::getVsTeams(const int index) const
+{
+	if (index < 0 || index > 2)
+		return nullptr;
+
+	Team* team = getTeam(index);
+
+	if (team == nullptr)
+		return nullptr;
+
+	Team** teams = new Team*[2];
+
+	teams[0] = getTeam(index == 0);
+
+	if (index == 0)
+		teams[1] = getTeam(2);
+	else if (type == TRI)
+		teams[1] = getTeam(3 - index);
+	else
+		teams[1] = nullptr;
+
+	return teams;
+}
+
+/**
+ * Gets the strings that represent the teams that
+ * the given team index will play against in this meet.
+ * @param index The index of the team to get the vs strings for.
+ * @return A string continaing "vs" and the names of the opposing teams.
+ */
+std::string Meet::getVsStrs(const int index) const
+{
+	Team** teams = getVsTeams(index);
+
+	if (teams == nullptr)
+		return "";
+
+	std::string str = "";
+
+	if (teams[0] != nullptr)
+	{
+		str += "vs " + teams[0]->getName();
+
+		if (teams[1] != nullptr)
+			str += ", " + teams[1]->getName();
+	}
+
+	delete[] teams;
+
+	return str;
+}

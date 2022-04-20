@@ -28,6 +28,9 @@ public:
 	Team* getTeam(const int index) const;
 	MeetType getType() const;
 
+	Team** getVsTeams(const int index) const;
+	std::string getVsStrs(const int index) const;
+
 private:
 	/**
 	 * The type of this meet
